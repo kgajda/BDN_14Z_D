@@ -1,5 +1,6 @@
 package pl.agh.projekt.db.orm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Orders {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CustomerID")
     @Fetch(org.hibernate.annotations.FetchMode.JOIN)
+    @JsonIgnore
     private Customer customer;
     @Column(name = "EmployeeID", length = 11)
     private Integer employeeId;

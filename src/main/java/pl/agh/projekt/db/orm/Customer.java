@@ -1,12 +1,18 @@
 package pl.agh.projekt.db.orm;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by michal on 12.12.14.
  */
 @Entity
-@Table(name = "customers")
+@Table(name = "customers", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"ContactTitle", "CustomerID"})
+})
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +26,9 @@ public class Customer {
     private String contactTitle;
     @Version
     private long vesrion;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(org.hibernate.annotations.FetchMode.JOIN)
+    private List<Orders> ordersList = new LinkedList();
 
     public Customer() {
     }
@@ -68,5 +77,13 @@ public class Customer {
 
     public void setVesrion(long vesrion) {
         this.vesrion = vesrion;
+    }
+
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 }

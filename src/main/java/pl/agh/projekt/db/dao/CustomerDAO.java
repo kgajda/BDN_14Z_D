@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.agh.projekt.db.orm.Customer;
 
+import java.util.List;
+
 /**
  * Created by michal on 13.12.14.
  */
@@ -21,6 +23,13 @@ public class CustomerDAO {
         Query query = sessionFactory.getCurrentSession().createQuery("from Customer where customerID = :id");
         query.setParameter("id", id);
         return (Customer) query.uniqueResult();
+    }
+
+    @Transactional
+    public List<Customer> findAll() {
+        Query query = sessionFactory.getCurrentSession().createQuery("from Customer");
+        query.setMaxResults(5);
+        return (List<Customer>) query.list();
     }
 
     @Transactional
